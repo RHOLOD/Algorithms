@@ -87,28 +87,10 @@ namespace AlgorithmsDataStructures
 
         public void RemoveAll(int _value)
         {
-            Node current = head;
-            Node previous = null;
-
-            while (current != null)
+            int countItem = FindAll(_value).Count;
+            for (int i = 0; i < countItem;i++)
             {
-                if (current.value.Equals(_value))
-                {
-                    if (previous != null)
-                    {
-                        previous.next = current.next;
-                        if (current.next == null)
-                            tail = previous;
-                    }
-                    else
-                    {
-                        head = head.next;
-                        if (head == null)
-                            tail = null;
-                    }
-                }
-                previous = current;
-                current = current.next;
+                Remove(_value);
             }
         }
 
