@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace AlgorithmsDataStructures
@@ -35,6 +35,7 @@ namespace AlgorithmsDataStructures
             {
                 if (node.value == _value) return node;
                 node = node.next;
+                
             }
             return null;
         }
@@ -42,38 +43,129 @@ namespace AlgorithmsDataStructures
         public List<Node> FindAll(int _value)
         {
             List<Node> nodes = new List<Node>();
-            // здесь будет ваш код поиска всех узлов по заданному значению
+            Node node = head;
+            while (node != null)
+            {
+                if (node.value == _value) 
+                {
+                    nodes.Add(node);
+
+                }                     
+                node = node.next;
+            }            
             return nodes;
         }
 
         public bool Remove(int _value)
         {
-            // здесь будет ваш код удаления одного узла по заданному значению
-            return true; // если узел был удалён
+            Node current = head;
+            Node previous = null;
+
+            while (current != null)
+            {
+                if (current.value.Equals(_value))
+                {
+                    if (previous != null)
+                    {
+                        previous.next = current.next;
+                        if (current.next == null)
+                            tail = previous;
+                    }
+                    else
+                    {
+                        head = head.next;
+                        if (head == null)
+                            tail = null;
+                    }
+                    return true;
+                }
+                previous = current;
+                current = current.next;
+            }
+            return false;
         }
 
         public void RemoveAll(int _value)
         {
-            // здесь будет ваш код удаления всех узлов по заданному значению
+            Node current = head;
+            Node previous = null;
+
+            while (current != null)
+            {
+                if (current.value.Equals(_value))
+                {
+                    if (previous != null)
+                    {
+                        previous.next = current.next;
+                        if (current.next == null)
+                            tail = previous;
+                    }
+                    else
+                    {
+                        head = head.next;
+                        if (head == null)
+                            tail = null;
+                    }
+                }
+                previous = current;
+                current = current.next;
+            }
         }
 
         public void Clear()
         {
-            // здесь будет ваш код очистки всего списка
+            head = null;
+            tail = null;
         }
 
         public int Count()
         {
-            return 0; // здесь будет ваш код подсчёта количества элементов в списке
+            int count = 0;
+            Node node = head;
+            while (node != null)
+            {
+                count++;
+                node = node.next;
+            }
+            return count;
         }
 
         public void InsertAfter(Node _nodeAfter, Node _nodeToInsert)
         {
-            // здесь будет ваш код вставки узла после заданного
+            Node current = head;
+            Node previous = null;
+            if (_nodeAfter == null)
+            {
+                if (head == null) head = _nodeToInsert;
+                else tail.next = _nodeToInsert;
+                tail = _nodeToInsert;
+                return;
+            }
+            else
+            {
+                while (current != null)
+                {
+                    if (current.value.Equals(_nodeAfter.value))
+                    {                      
 
-            // если _nodeAfter = null , 
-            // добавьте новый элемент первым в списке 
+                        if (previous != null)
+                        {
+                            Node oldCurrent = current.next;
+                            _nodeToInsert.next = oldCurrent;
+                            current.next = _nodeToInsert;
+                        }
+                        else
+                        {
+                            head = head.next;
+                            if (head == null)
+                                tail = null;
+                        }
+                        return;
+                    }
+                    previous = current;
+                    current = current.next;
+                }
+            }
         }
-
-    }
+    }      
 }
