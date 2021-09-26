@@ -178,14 +178,6 @@ namespace AlgorithmsDataStructures
             }
             else
             {
-                foreach (Node identifier in nodesPrev)
-                {
-                    AddInTail(identifier);
-                    if (identifier == _nodeAfter)
-                    {
-                        AddInTail(_nodeToInsert);
-                    }
-                }
                 foreach (Node identifier in nodesNext)
                 {
                     AddInTail(identifier);
