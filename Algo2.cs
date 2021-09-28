@@ -145,22 +145,18 @@ namespace AlgorithmsDataStructures
         {
             List<Node> nodes = new List<Node>();
             Node node = head;
-
+            while (node != null)
+            {
+                nodes.Add(node);
+                node = node.next;
+            }
             if (_nodeAfter == null)
             {
                 AddFirst(_nodeToInsert);
             }
             else
             {
-                while (node.prev != null)
-                {
-                    node = node.prev;
-                }
-                while (node != null)
-                {
-                    nodes.Add(node);
-                    node = node.next;
-                }
+                Clear();
                 foreach (Node identifier in nodes)
                 {
                     AddInTail(identifier);
