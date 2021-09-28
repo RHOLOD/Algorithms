@@ -156,29 +156,25 @@ namespace AlgorithmsDataStructures
 
         public void InsertAfter(Node _nodeAfter, Node _nodeToInsert)
         {
-            List<Node> nodesNext = new List<Node>();
-            List<Node> nodesPrev = new List<Node>();
-            Node nodeNext = head;
-            Node nodePrev = head;
-            while (nodeNext != null)
-            {
-                nodesNext.Add(nodeNext);
-                nodeNext = nodeNext.next;
-            }
-            while (nodePrev != null)
-            {
-                nodesPrev.Add(nodePrev);
-                nodePrev = nodePrev.prev;
-            }
-            nodesPrev.Reverse();
+            List<Node> nodes = new List<Node>();
+            Node node = head;
 
-            if (_nodeAfter == null)
+            if (_nodeAfter == null || node == null)
             {
                 AddInTail(_nodeToInsert);
             }
             else
             {
-                foreach (Node identifier in nodesNext)
+                while (node.prev != null)
+                {
+                    node = node.prev;
+                }
+                while (node != null)
+                {
+                    nodes.Add(node);
+                    node = node.next;
+                }
+                foreach (Node identifier in nodes)
                 {
                     AddInTail(identifier);
                     if (identifier == _nodeAfter)
