@@ -161,7 +161,7 @@ namespace AlgorithmsDataStructures
 
             if (_nodeAfter == null || node == null)
             {
-                AddInTail(_nodeToInsert);
+                AddFirst(_nodeToInsert);
             }
             else
             {
