@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace AlgorithmsDataStructures
@@ -42,21 +42,24 @@ namespace AlgorithmsDataStructures
             }
             tail = _item;
         }
-
+        public void AddFirst(Node _item)
+        {
+            int count = Count();
+            Node temp = head;
+            _item.next = temp;
+            head = _item;            
+            if (count == 0)
+                tail = head;
+            else
+                temp.prev = _item;
+        }
         public Node Find(int _value)
         {
             Node node = head;
-            Node nodePrev = head;
             while (node != null)
             {
                 if (node.value == _value) return node;
                 node = node.next;
-
-            }
-            while (nodePrev != null)
-            {
-                if (nodePrev.value == _value) return nodePrev;
-                nodePrev = nodePrev.prev;
 
             }
             return null;
@@ -66,7 +69,6 @@ namespace AlgorithmsDataStructures
         {
             List<Node> nodes = new List<Node>();
             Node node = head;
-            Node nodePrev = head;
             while (node != null)
             {
                 if (node.value == _value)
@@ -75,15 +77,6 @@ namespace AlgorithmsDataStructures
 
                 }
                 node = node.next;
-            }
-            while (nodePrev != null)
-            {
-                if (nodePrev.value == _value)
-                {
-                    nodes.Add(nodePrev);
-
-                }
-                nodePrev = nodePrev.prev;
             }
             return nodes;
         }
@@ -140,16 +133,10 @@ namespace AlgorithmsDataStructures
         {
             int count = 0;
             Node node = head;
-            Node nodePrev = head;
             while (node != null)
-            {
-                count++;
+            {              
                 node = node.next;
-            }
-            while (nodePrev != null)
-            {
                 count++;
-                nodePrev = nodePrev.prev;
             }
             return count;
         }
@@ -159,7 +146,7 @@ namespace AlgorithmsDataStructures
             List<Node> nodes = new List<Node>();
             Node node = head;
 
-            if (_nodeAfter == null || node == null)
+            if (_nodeAfter == null)
             {
                 AddFirst(_nodeToInsert);
             }
