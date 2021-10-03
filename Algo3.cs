@@ -93,7 +93,7 @@ namespace AlgorithmsDataStructures
             }
             else
             {
-                int lengthCopyArray = count - index - 1;
+                int lengthCopyArray = count - index;
                 Array.Copy(previousArray, index+1, array, index, lengthCopyArray);
                 count--;
                 int verifyCapacity = (int)(capacity / 1.5);
