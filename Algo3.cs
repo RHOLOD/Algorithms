@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace AlgorithmsDataStructures
@@ -68,20 +68,31 @@ namespace AlgorithmsDataStructures
             Array.Copy(array, previousArray,count);
             if (index >= capacity)
             {
-                //throw new IndexOutOfRangeException();
+                
             }
             else
             {
-                if (count == capacity)
+                if (array == null)
                 {
-                    MakeArray(capacity * 2);
+                    Append(itm);
                 }
-                if (index < count)
+                else
                 {
-                    array[index] = itm;
-                    int lengthCopyArray = count - index;
-                    Array.Copy(previousArray, index, array, index + 1, lengthCopyArray);
-                    count++;
+                    if (count == capacity)
+                    {
+                        MakeArray(capacity * 2);
+                    }
+                    if (index < count)
+                    {
+                        array[index] = itm;
+                        int lengthCopyArray = count - index;
+                        Array.Copy(previousArray, index, array, index + 1, lengthCopyArray);
+                        count++;
+                    }
+                    else
+                    {
+                        Append(itm);
+                    }
                 }
             }
         }
@@ -89,10 +100,10 @@ namespace AlgorithmsDataStructures
         public void Remove(int index)
         {
             T[] previousArray = new T[capacity];
-            Array.Copy(array, previousArray,count);
+            Array.Copy(array, previousArray, count);
             if (index >= capacity)
             {
-                throw new IndexOutOfRangeException();
+
             }
             else
             {
