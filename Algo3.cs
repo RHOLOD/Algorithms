@@ -64,15 +64,12 @@ namespace AlgorithmsDataStructures
 
         public void Insert(T itm, int index)
         {
-            T[] previousArray = new T[capacity];
+            T[] previousArray = new T[count];
             Array.Copy(array, previousArray,count);
-            if (index >= capacity)
+            if (index < capacity)
             {
-                
-            }
-            else
-            {
-                if (array == null)
+
+                if (array == null )
                 {
                     Append(itm);
                 }
@@ -82,39 +79,60 @@ namespace AlgorithmsDataStructures
                     {
                         MakeArray(capacity * 2);
                     }
-                    if (index != count)
-                    {
-                        array[index] = itm;
-                        int lengthCopyArray = count - index;
-                        Array.Copy(previousArray, index, array, index + 1, lengthCopyArray);
-                        count++;
-                    }
-                    else
+                    if ( index == count)
                     {
                         Append(itm);
                     }
+                    else
+                    {
+                        count = 0;
+                        int indexArray = 0;
+                        foreach (T identifier in previousArray)
+                        {
+                            if (indexArray == index)
+                            {
+                                Append(itm);
+                                indexArray++;
+                            }
+                            Append(identifier);
+                            indexArray++;
+                        }
+                    }                
                 }
             }
         }
 
         public void Remove(int index)
         {
-            T[] previousArray = new T[capacity];
+            T[] previousArray = new T[count];
+            
             Array.Copy(array, previousArray, count);
-            if (index >= capacity)
+            if (index < capacity)
             {
-
-            }
-            else
-            {
-                int lengthCopyArray = count - index;
-                Array.Copy(previousArray, index+1, array, index, lengthCopyArray);
-                count--;
-                int verifyCapacity = (int)(capacity / 1.5);
-                if (count < verifyCapacity || verifyCapacity > 16)
+                if (capacity/2 > count-- || capacity != 16)
                 {
-                    MakeArray(verifyCapacity);
+                    int verifyCapacity = (int)(capacity / 1.5);
+                    if (verifyCapacity > 16)
+                    {
+                        MakeArray(verifyCapacity);
+                    }
                 }
+                array[count] = default(T);
+                count = 0;
+                int indexArray = 0;
+                foreach (T identifier in previousArray)
+                {
+                    if (indexArray != index)
+                    {
+                        Append(identifier);
+                        indexArray++;
+                    }
+                    else
+                    {
+                        indexArray++;
+                    }
+                }
+                
             }
         }
     }
