@@ -85,7 +85,8 @@ namespace AlgorithmsDataStructures
 
         public void Remove(int index)
         {
-            T[] previousArray = array;
+            T[] previousArray = new T[capacity];
+            Array.Copy(array, previousArray,count);
             if (index >= capacity)
             {
                 throw new IndexOutOfRangeException();
