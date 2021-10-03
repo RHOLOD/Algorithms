@@ -82,7 +82,7 @@ namespace AlgorithmsDataStructures
                     {
                         MakeArray(capacity * 2);
                     }
-                    if (index < count)
+                    if (index != count)
                     {
                         array[index] = itm;
                         int lengthCopyArray = count - index;
