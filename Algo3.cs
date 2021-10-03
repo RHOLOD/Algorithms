@@ -64,30 +64,22 @@ namespace AlgorithmsDataStructures
 
         public void Insert(T itm, int index)
         {
-            T[] previousArray =array;
+            T[] previousArray = new T[capacity];
+            Array.Copy(array, previousArray,count);
             if (index >= capacity)
             {
                 throw new IndexOutOfRangeException();
             }
             else
             {
-                if (count-1 > index)
+                if (count == capacity)
                 {
-                    if (count == capacity)
-                    {
-                        MakeArray(capacity * 2);
-                    }
-                    array[index] = itm;
-                    int lengthCopyArray = count - index - 1;
-                    Array.Copy(previousArray, index, array, index + 1, lengthCopyArray);
-                    count++;
+                    MakeArray(capacity * 2);
                 }
-                else 
-                {
-                    array[index] = itm;
-                    count++;
-                }
-
+                array[index] = itm;
+                int lengthCopyArray = count - index;
+                Array.Copy(previousArray, index, array, index + 1, lengthCopyArray);
+                count++;
             }
         }
 
