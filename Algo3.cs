@@ -68,7 +68,7 @@ namespace AlgorithmsDataStructures
             Array.Copy(array, previousArray,count);
             if (index >= capacity)
             {
-                throw new IndexOutOfRangeException();
+                //throw new IndexOutOfRangeException();
             }
             else
             {
@@ -76,10 +76,13 @@ namespace AlgorithmsDataStructures
                 {
                     MakeArray(capacity * 2);
                 }
-                array[index] = itm;
-                int lengthCopyArray = count - index;
-                Array.Copy(previousArray, index, array, index + 1, lengthCopyArray);
-                count++;
+                if (index < count)
+                {
+                    array[index] = itm;
+                    int lengthCopyArray = count - index;
+                    Array.Copy(previousArray, index, array, index + 1, lengthCopyArray);
+                    count++;
+                }
             }
         }
 
