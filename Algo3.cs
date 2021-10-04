@@ -92,10 +92,6 @@ namespace AlgorithmsDataStructures
                             Append(identifier);
                         }
                     }
-                    else
-                    {
-                        Append(itm);
-                    }
                 }
             }
         }
