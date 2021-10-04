@@ -64,11 +64,11 @@ namespace AlgorithmsDataStructures
 
         public void Insert(T itm, int index)
         {
-            T[] previousArray = new T[count];
-            Array.Copy(array, previousArray,count);
-            if (index < capacity)
+ 
+            if (index <= capacity)
             {
-
+                T[] previousArray = new T[count-index];
+                Array.Copy(array, index, previousArray, 0, count - index);
                 if (array == null )
                 {
                     Append(itm);
@@ -83,32 +83,30 @@ namespace AlgorithmsDataStructures
                     {
                         Append(itm);
                     }
-                    else
+                    else if (index < count)
                     {
-                        count = 0;
-                        int indexArray = 0;
+                        count = index;
+                        Append(itm);
                         foreach (T identifier in previousArray)
                         {
-                            if (indexArray == index)
-                            {
-                                Append(itm);
-                                indexArray++;
-                            }
                             Append(identifier);
-                            indexArray++;
                         }
-                    }                
+                    }
+                    else
+                    {
+                        Append(itm);
+                    }
                 }
             }
         }
 
         public void Remove(int index)
         {
-            T[] previousArray = new T[count];
-            
-            Array.Copy(array, previousArray, count);
             if (index < capacity)
             {
+                T[] previousArray = new T[count - index-1];
+                Array.Copy(array, index+1, previousArray, 0, count - index-1);
+
                 if (capacity/2 > count-- || capacity != 16)
                 {
                     int verifyCapacity = (int)(capacity / 1.5);
@@ -118,19 +116,10 @@ namespace AlgorithmsDataStructures
                     }
                 }
                 array[count] = default(T);
-                count = 0;
-                int indexArray = 0;
+                count = index;
                 foreach (T identifier in previousArray)
                 {
-                    if (indexArray != index)
-                    {
-                        Append(identifier);
-                        indexArray++;
-                    }
-                    else
-                    {
-                        indexArray++;
-                    }
+                    Append(identifier);
                 }
                 
             }
