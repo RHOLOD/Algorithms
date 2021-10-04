@@ -105,7 +105,7 @@ namespace AlgorithmsDataStructures
                     T[] previousArray = new T[count - index - 1];
                     Array.Copy(array, index + 1, previousArray, 0, count - index - 1);
 
-                    if (capacity / 2 > count-- || capacity != 16)
+                    if (capacity / 2 > count-- || capacity/2 > 16)
                     {
                         int verifyCapacity = (int)(capacity / 1.5);
                         if (verifyCapacity > 16)
