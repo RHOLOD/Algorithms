@@ -65,7 +65,7 @@ namespace AlgorithmsDataStructures
         public void Insert(T itm, int index)
         {
  
-            if (index <= capacity)
+            if (index <= capacity && index <= count)
             {
                 T[] previousArray = new T[count-index];
                 Array.Copy(array, index, previousArray, 0, count - index);
