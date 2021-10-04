@@ -41,22 +41,22 @@ namespace AlgorithmsDataStructures
                 T item = array[index];
                 return item;
             }
-            catch(IndexOutOfRangeException)
+            catch (IndexOutOfRangeException)
             {
                 return default(T);
-            }                        
+            }
         }
 
         public void Append(T itm)
         {
-            if (count +1 <= capacity)
-            {                
+            if (count + 1 <= capacity)
+            {
                 array[count] = itm;
                 count++;
             }
             else
             {
-                MakeArray(capacity * 2);                
+                MakeArray(capacity * 2);
                 array[count] = itm;
                 count++;
             }
@@ -64,12 +64,12 @@ namespace AlgorithmsDataStructures
 
         public void Insert(T itm, int index)
         {
- 
+
             if (index <= capacity && index <= count)
             {
-                T[] previousArray = new T[count-index];
+                T[] previousArray = new T[count - index];
                 Array.Copy(array, index, previousArray, 0, count - index);
-                if (array == null )
+                if (array == null)
                 {
                     Append(itm);
                 }
@@ -79,7 +79,7 @@ namespace AlgorithmsDataStructures
                     {
                         MakeArray(capacity * 2);
                     }
-                    if ( index == count)
+                    if (index == count)
                     {
                         Append(itm);
                     }
@@ -94,6 +94,10 @@ namespace AlgorithmsDataStructures
                     }
                 }
             }
+            else
+            {
+                throw new IndexOutOfRangeException();
+            }
         }
 
         public void Remove(int index)
@@ -105,7 +109,7 @@ namespace AlgorithmsDataStructures
                     T[] previousArray = new T[count - index - 1];
                     Array.Copy(array, index + 1, previousArray, 0, count - index - 1);
 
-                    if (capacity / 2 > count-1 || capacity/2 > 16)
+                    if (capacity / 2 > count - 1 || capacity / 2 > 16)
                     {
                         int verifyCapacity = (int)(capacity / 1.5);
                         if (verifyCapacity > 16)
@@ -113,13 +117,17 @@ namespace AlgorithmsDataStructures
                             MakeArray(verifyCapacity);
                         }
                     }
-                    array[count-1] = default(T);
+                    array[count - 1] = default(T);
                     count = index;
                     foreach (T identifier in previousArray)
                     {
                         Append(identifier);
                     }
-                } 
+                }
+            }
+            else
+            {
+                throw new IndexOutOfRangeException();
             }
         }
     }
