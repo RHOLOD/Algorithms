@@ -113,7 +113,7 @@ namespace AlgorithmsDataStructures
                             MakeArray(verifyCapacity);
                         }
                     }
-                    array[count] = default(T);
+                    array[count-1] = default(T);
                     count = index;
                     foreach (T identifier in previousArray)
                     {
