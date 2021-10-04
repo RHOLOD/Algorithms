@@ -100,24 +100,26 @@ namespace AlgorithmsDataStructures
         {
             if (index < capacity)
             {
-                T[] previousArray = new T[count - index-1];
-                Array.Copy(array, index+1, previousArray, 0, count - index-1);
+                if (index < count)
+                {
+                    T[] previousArray = new T[count - index - 1];
+                    Array.Copy(array, index + 1, previousArray, 0, count - index - 1);
 
-                if (capacity/2 > count-- || capacity != 16)
-                {
-                    int verifyCapacity = (int)(capacity / 1.5);
-                    if (verifyCapacity > 16)
+                    if (capacity / 2 > count-- || capacity != 16)
                     {
-                        MakeArray(verifyCapacity);
+                        int verifyCapacity = (int)(capacity / 1.5);
+                        if (verifyCapacity > 16)
+                        {
+                            MakeArray(verifyCapacity);
+                        }
                     }
-                }
-                array[count] = default(T);
-                count = index;
-                foreach (T identifier in previousArray)
-                {
-                    Append(identifier);
-                }
-                
+                    array[count] = default(T);
+                    count = index;
+                    foreach (T identifier in previousArray)
+                    {
+                        Append(identifier);
+                    }
+                } 
             }
         }
     }
