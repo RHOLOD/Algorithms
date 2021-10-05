@@ -102,26 +102,27 @@ namespace AlgorithmsDataStructures
 
         public void Remove(int index)
         {
-            if (index < capacity)
+            if (index < capacity && index <count)
             {
                 if (index < count)
                 {
                     T[] previousArray = new T[count - index - 1];
                     Array.Copy(array, index + 1, previousArray, 0, count - index - 1);
 
-                    if (capacity / 2 > count - 1 || capacity / 2 > 16)
-                    {
-                        int verifyCapacity = (int)(capacity / 1.5);
-                        if (verifyCapacity > 16)
-                        {
-                            MakeArray(verifyCapacity);
-                        }
-                    }
+
                     array[count - 1] = default(T);
                     count = index;
                     foreach (T identifier in previousArray)
                     {
                         Append(identifier);
+                    }
+                    if (capacity / 2 > count && capacity / 2 >= 16)
+                    {
+                        int verifyCapacity = (int)(capacity / 1.5);
+                        if (verifyCapacity >= 16)
+                        {
+                            MakeArray(verifyCapacity);
+                        }
                     }
                 }
             }
