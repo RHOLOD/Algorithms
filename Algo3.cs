@@ -116,13 +116,18 @@ namespace AlgorithmsDataStructures
                     {
                         Append(identifier);
                     }
-                    if (capacity / 2 > count && capacity / 2 >= 16)
+                    if (capacity / 2 > count && capacity != 16)
                     {
-                        int verifyCapacity = (int)(capacity / 1.5);
-                        if (verifyCapacity >= 16)
+                        if (capacity / 2 >= 16)
                         {
+                            int verifyCapacity = (int)(capacity / 1.5);
                             MakeArray(verifyCapacity);
                         }
+                        else
+                        {
+                            MakeArray(16);
+                        }
+
                     }
                 }
             }
