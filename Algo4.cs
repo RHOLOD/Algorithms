@@ -20,7 +20,6 @@ namespace AlgorithmsDataStructures
         {
 
             head = null;
-            head.Next = null;
             count = 0;
             // инициализация внутреннего хранилища стека
         }
