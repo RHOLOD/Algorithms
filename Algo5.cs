@@ -1,57 +1,101 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace AlgorithmsDataStructures
 {
-    public class Node<T>
+    public class DoublyNode<T>
     {
-        public Node(T data)
+        public DoublyNode(T data)
         {
             Data = data;
         }
         public T Data { get; set; }
-        public Node<T> Next { get; set; }
+        public DoublyNode<T> Previous { get; set; }
+        public DoublyNode<T> Next { get; set; }
     }
-    public class Queue<T>
+    class Deque<T>
     {
-        Node<T> head; // головной/первый элемент
-        Node<T> tail; // последний/хвостовой элемент
-        int count;
-        public Queue()
+        DoublyNode<T> head; 
+        DoublyNode<T> tail; 
+        int count;  
+        public Deque()
         {
             head = null;
             tail = null;
             count = 0;
-            // инициализация внутреннего хранилища очереди
         }
 
-        public void Enqueue(T item)
+        public void AddFront(T item)
         {
-            Node<T> node = new Node<T>(item);
-            Node<T> tempNode = tail;
-            tail = node;
+            // добавление в голову
+            DoublyNode<T> node = new DoublyNode<T>(item);
+            DoublyNode<T> temp = head;
+            node.Next = temp;
+            head = node;
             if (count == 0)
-                head = tail;
+                tail = head;
             else
-                tempNode.Next = tail;
+                temp.Previous = node;
             count++;
-            // вставка в хвост
         }
 
-        public T Dequeue()
+        public void AddTail(T item)
         {
-            if (count > 0)
+            // добавление в хвост
+            DoublyNode<T> node = new DoublyNode<T>(item);
+
+            if (head == null)
+                head = node;
+            else
             {
-                // выдача из головы
-                T queueHead = head.Data;
-                head = head.Next;
-                count--;
-                return queueHead;
+                tail.Next = node;
+                node.Previous = tail;
+            }
+            tail = node;
+            count++;
+        }
+
+        public T RemoveFront()
+        {
+            // удаление из головы
+            if (count == 0)
+            {
+                return default(T);
+
+            }
+            T outputItem = head.Data;
+            if (count == 1)
+            {
+                head = tail = null;
             }
             else
             {
-                return default(T); // если очередь пустая
-            }           
+                head = head.Next;
+                head.Previous = null;
+            }
+            count--;
+            return outputItem;            
+        }
+
+        public T RemoveTail()
+        {
+            // удаление из хвоста
+            if (count == 0)
+            {
+                return default(T);
+            }
+            T outputItem = tail.Data;
+            if (count == 1)
+            {
+                head = tail = null;
+            }
+            else
+            {
+                tail = tail.Previous;
+                tail.Next = null;
+            }
+            count--;
+            return outputItem;
         }
 
         public int Size()
@@ -59,4 +103,5 @@ namespace AlgorithmsDataStructures
             return count; // размер очереди
         }
     }
+
 }
