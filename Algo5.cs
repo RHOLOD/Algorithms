@@ -3,99 +3,55 @@ using System.Collections.Generic;
 
 namespace AlgorithmsDataStructures
 {
-    public class DoublyNode<T>
+    public class Node<T>
     {
-        public DoublyNode(T data)
+        public Node(T data)
         {
             Data = data;
         }
         public T Data { get; set; }
-        public DoublyNode<T> Previous { get; set; }
-        public DoublyNode<T> Next { get; set; }
+        public Node<T> Next { get; set; }
     }
-    class Deque<T>
+    public class Queue<T>
     {
-        DoublyNode<T> head; 
-        DoublyNode<T> tail; 
-        int count;  
-        public Deque()
+        Node<T> head; // головной/первый элемент
+        Node<T> tail; // последний/хвостовой элемент
+        int count;
+        public Queue()
         {
             head = null;
             tail = null;
             count = 0;
+            // инициализация внутреннего хранилища очереди
         }
 
-        public void AddFront(T item)
+        public void Enqueue(T item)
         {
-            // добавление в голову
-            DoublyNode<T> node = new DoublyNode<T>(item);
-            DoublyNode<T> temp = head;
-            node.Next = temp;
-            head = node;
-            if (count == 0)
-                tail = head;
-            else
-                temp.Previous = node;
-            count++;
-        }
-
-        public void AddTail(T item)
-        {
-            // добавление в хвост
-            DoublyNode<T> node = new DoublyNode<T>(item);
-
-            if (head == null)
-                head = node;
-            else
-            {
-                tail.Next = node;
-                node.Previous = tail;
-            }
+            Node<T> node = new Node<T>(item);
+            Node<T> tempNode = tail;
             tail = node;
+            if (count == 0)
+                head = tail;
+            else
+                tempNode.Next = tail;
             count++;
+            // вставка в хвост
         }
 
-        public T RemoveFront()
+        public T Dequeue()
         {
-            // удаление из головы
-            if (count == 0)
+            if (count > 0)
             {
-                return default(T);
-
-            }
-            T outputItem = head.Data;
-            if (count == 1)
-            {
-                head = tail = null;
-            }
-            else
-            {
+                // выдача из головы
+                T queueHead = head.Data;
                 head = head.Next;
-                head.Previous = null;
-            }
-            count--;
-            return outputItem;            
-        }
-
-        public T RemoveTail()
-        {
-            // удаление из хвоста
-            if (count == 0)
-            {
-                return default(T);
-            }
-            T outputItem = tail.Data;
-            if (count == 1)
-            {
-                head = tail = null;
+                count--;
+                return queueHead;
             }
             else
             {
-                tail = tail.Previous;
-                tail.Next = null;
-            }
-            count--;
-            return outputItem;
+                return default(T); // если очередь пустая
+            }           
         }
 
         public int Size()
@@ -103,5 +59,4 @@ namespace AlgorithmsDataStructures
             return count; // размер очереди
         }
     }
-
-}
+} 
