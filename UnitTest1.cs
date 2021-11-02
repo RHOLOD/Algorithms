@@ -1,17 +1,3 @@
-﻿using AlgorithmsDataStructures;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-
-namespace UnitTestAlgo7
-{
-    [TestClass]
-    public class UnitTest1
-    {
-        [TestMethod]
-        public void TestMethod1()
-        {
-            // Тест проверяет добавление элементов.
             OrderedList<int> orderedList = new OrderedList<int>(true);
             LinkedList<int> expected = new LinkedList<int>();
             LinkedList<int> actual = new LinkedList<int>();
@@ -20,13 +6,17 @@ namespace UnitTestAlgo7
             actual.AddLast(10);
             actual.AddLast(20);
             actual.AddLast(25);
+            actual.AddLast(26);
             actual.AddLast(30);
+            actual.AddLast(40);
 
             orderedList.Add(10);
             orderedList.Add(20);
             orderedList.Add(30);
             orderedList.Add(25);
             orderedList.Add(1);
+            orderedList.Add(40);
+            orderedList.Add(26);
 
             while (orderedList.head != null)
             {
@@ -34,6 +24,3 @@ namespace UnitTestAlgo7
                 orderedList.head = orderedList.head.next;
             }
             CollectionAssert.AreEqual(expected, actual);
-        }
-    }
-}
