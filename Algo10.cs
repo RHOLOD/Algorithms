@@ -58,10 +58,15 @@ namespace AlgorithmsDataStructures
 
         public bool Remove(T value)
         {
-            int index = Array.IndexOf(slots, value);
+            if (value == null)
+            {
+                return true;
+            }
+            int index = Array.IndexOf(slots, value);            
             if (index != -1)
             {
                 slots[index] = default(T);
+                quantity--;
                 return true;
             }
             // возвращает true если value удалено
