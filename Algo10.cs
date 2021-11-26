@@ -15,7 +15,7 @@ namespace AlgorithmsDataStructures
         public PowerSet()
         {
             quantity = 0;
-            size = 14;
+            size = 20000;
             step = 1;
             slots = new T[size];
             for (int i = 0; i < size; i++) slots[i] = default(T);
