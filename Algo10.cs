@@ -60,7 +60,7 @@ namespace AlgorithmsDataStructures
         {
             if (value == null)
             {
-                return true;
+                return false;
             }
             int index = Array.IndexOf(slots, value);            
             if (index != -1)
