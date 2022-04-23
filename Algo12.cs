@@ -1,152 +1,208 @@
-﻿using System.Collections.Generic;
-using System;
-using System.IO;
-using System.Collections;
+﻿using System;
+using System.Collections.Generic;
 
-namespace AlgorithmsDataStructures
+namespace AlgorithmsDataStructures2
 {
-    public class NativeCache<T>
+    public class Vertex<T>
     {
-        public int size;
-        public string[] slots;
-        public T[] values;
-        public int[] hits;
-        public int step;
-
-        public NativeCache(int sz,int st)
+        public bool Hit;
+        public T Value;
+        public Vertex(T val)
         {
-            size = sz;
-            slots = new string[size];
-            values = new T[size];
-            hits = new int[size];
-            step = st;
+            Value = val;
+            Hit = false;
+        }
+    }
+
+    public class SimpleGraph<T>
+    {
+        // ...
+        public Vertex<T>[] vertex;
+        public int[,] m_adjacency;
+        public int max_vertex;       
+        public SimpleGraph(int size)
+        {
+            max_vertex = size;
+            m_adjacency = new int[size, size];
+            vertex = new Vertex<T>[size];
         }
 
-        public int HashFun(string key)
+        public void AddVertex(T value)
         {
-            int value = Math.Abs(key.GetHashCode());
-            int index = value % size;
-            return index;
-        }
-        public bool IsKey(string key)
-        {
-            int index = HashFun(key);
-            if (slots[index] == key)
+            // ваш код добавления новой вершины 
+            // с значением value 
+            // в свободную позицию массива vertex
+            for (int i = 0; i < max_vertex; i++)
             {
-                return true;
-            }
-            else
-            {
-                index = Find(key);
-                if (index != -1)
+                if (vertex[i] == null)
                 {
-                    return true;
+                    vertex[i] = new Vertex<T>(value);
+                    break;
                 }
             }
-            // возвращает true если ключ имеется,
-            // иначе false
+        }
+
+        // здесь и далее, параметры v -- индекс вершины
+        // в списке  vertex
+        public void RemoveVertex(int v)
+        {
+            vertex[v] = null;
+
+            for (int i = 0; i < max_vertex; i++)
+            {
+                m_adjacency[i, v] = 0;
+            }
+            for (int i = 0; i < max_vertex; i++)
+            {
+                m_adjacency[v, i] = 0;
+            }
+
+            // ваш код удаления вершины со всеми её рёбрами
+        }
+
+        public bool IsEdge(int v1, int v2)
+        {
+            if (m_adjacency[v1, v2] == 1) return true;
+            // true если есть ребро между вершинами v1 и v2
             return false;
         }
 
-        public void Put(string key, T value)
+        public void AddEdge(int v1, int v2)
         {
-            int index = SeekSlot(key);
-            if (index == -1)
-            {
-                index = Displacement();
-            }
-            slots[index] = key;
-            values[index] = value;
-
-            // гарантированно записываем 
-            // значение value по ключу key
+            m_adjacency[v1, v2] = 1;
+            m_adjacency[v2, v1] = 1;
+            // добавление ребра между вершинами v1 и v2
         }
 
-        public T Get(string key)
+        public void RemoveEdge(int v1, int v2)
         {
-            if (IsKey(key))
+            m_adjacency[v1, v2] = 0;
+            m_adjacency[v2, v1] = 0;
+            // удаление ребра между вершинами v1 и v2
+        }
+        public List<Vertex<T>> DepthFirstSearch(int VFrom, int VTo)
+        {
+            // Узлы задаются позициями в списке vertex.
+            // Возвращается список узлов -- путь из VFrom в VTo.
+            // Список пустой, если пути нету.
+            for (int i = 0; i < max_vertex; i++)
             {
-                int index = HashFun(key);
-                if (slots[index] == key)
+                vertex[i].Hit = false;
+            }
+            List<Vertex<T>> list = new List<Vertex<T>>();
+            if (VFrom > max_vertex || VTo > max_vertex) return list;
+            Stack<Vertex<T>> stack = new Stack<Vertex<T>>();
+            stack.Push(vertex[VFrom]);
+
+
+            bool FindingPath (int nodeFrom)
+            {
+                //stack.Push(vertex[nodeFrom]);
+                vertex[nodeFrom].Hit = true;
+                for (int i = 0; i < max_vertex; i++)
                 {
-                    hits[index]++;
-                    return values[index];
-                }
-                else
-                {
-                    index = Find(key);
-                    if (index != -1)
+                    if ((m_adjacency[nodeFrom, i] == 1) && (i == VTo))
                     {
-                        hits[index]++;
-                        return values[index];
+                        stack.Push(vertex[VTo]);
+                        vertex[VTo].Hit = true;
+                        return true;
+                    }                    
+                }
+                for (int i = 0; i < max_vertex; i++)
+                {
+                    if ((m_adjacency[nodeFrom, i] == 1) && vertex[i].Hit == false)
+                    {
+                        vertex[i].Hit = true;
+                        stack.Push(vertex[i]);                                               
+                        if (FindingPath(i)) return true;
+                        else
+                        {
+                            stack.Pop();         
+                        }
                     }
                 }
-
+                return false;
             }
-            // возвращает value для key, 
-            // или null если ключ не найден
-            return default(T);
-        }
-        public int SeekSlot(string value)
-        {
-            int indexHash = HashFun(value);
-            int index = indexHash;
 
-            if (slots[index] == null)
+            if (FindingPath(VFrom))
             {
-                return index;
-            }
-            else
-            {
-                index = index + step;
-                if (index >= size)
+                while(stack.Count != 0)
                 {
-                    index = step - (size - indexHash);
+                    list.Add(stack.Pop());
                 }
-                while (index != indexHash)
+                list.Reverse();
+            }
+            return list;
+        }
+        public List<Vertex<T>> BreadthFirstSearch(int VFrom, int VTo)
+        {
+            // узлы задаются позициями в списке vertex.
+            // возвращает список узлов -- путь из VFrom в VTo
+            // или пустой список, если пути нету
+            
+            for (int i = 0; i < max_vertex; i++)
+            {
+                vertex[i].Hit = false;
+            }
+            List<Vertex<T>> list = new List<Vertex<T>>();
+            if (VFrom > max_vertex || VTo > max_vertex) return list;
+            Dictionary<int, Tuple<int, int>> dictionary = new Dictionary<int, Tuple<int, int>>();
+            Queue<int> queue = new Queue<int>();
+            Tuple<int, int> LastNode = new Tuple<int, int>(0, 0);
+            dictionary.Add(VFrom, (VFrom,-1).ToTuple());            
+
+            bool FindingPath(int nodeFrom)
+            {
+                int parent = nodeFrom;
+                vertex[nodeFrom].Hit = true;
+                for (int i = 0; i < max_vertex; i++)
                 {
-                    if (slots[index] == null) return index;
-                    if ((index + step) >= size)
+                    if ((m_adjacency[nodeFrom, i] == 1) && (i == VTo))
                     {
-                        index = step - (size - index);
+                        queue.Enqueue(VTo);
+                        vertex[VTo].Hit = true;
+                        LastNode = (VTo,parent).ToTuple();
+                        return true;
                     }
-                    else
+                    if ((m_adjacency[nodeFrom, i] == 1) && vertex[i].Hit == false)
                     {
-                        index = index + step;
-                    }
+                        queue.Enqueue(i);
+                        vertex[i].Hit = true;
+                        dictionary.Add(i,(i, parent).ToTuple());
+                    }                        
                 }
-            }
-            // находит индекс пустого слота для значения, или -1
-            return -1;
-        }
-        public int Find(string value)
-        {
-            int index = Array.IndexOf(slots, value);
-            if (index != -1)
-            {
-                return index;
-            }
-            // находит индекс слота со значением, или -1
-            return -1;
-        }
-        public int Displacement()
-        {
-            int min = hits[0];
-            int index = 0;
-
-            for (int i = 0; i < hits.Length; i++)
-            {
-                if (min > hits[i])
+                while (queue.Count != 0)
                 {
-                    min = hits[i];
-                    index = i;
+                    int number = queue.Dequeue();
+                    if (number != VFrom)
+                    {                        
+                        if (FindingPath(number))
+                        {
+                            return true;
+                        }
+                    }                  
                 }
+                return false;
             }
-            slots[index] = null;
-            values[index] = default(T);
-            hits[index] = 0;
-            //Вытеснение элемента
-            return index;
+            if (FindingPath(VFrom))
+            {
+                Tuple<int, int> item = LastNode;
+                while (item.Item2 != -1)
+                {
+                    list.Add(vertex[item.Item1]);
+                    item = dictionary[item.Item2];
+                }
+                list.Add(vertex[item.Item1]);
+                list.Reverse();
+            }
+            return list;
         }
+        public List<Vertex<T>> WeakVertices()
+        {
+            // возвращает список узлов вне треугольников
+            List<Vertex<T>> list = new List<Vertex<T>>();
+            return list;
+        }
+
     }
 }
